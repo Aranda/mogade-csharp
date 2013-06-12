@@ -4,6 +4,24 @@ using Newtonsoft.Json;
 
 namespace Mogade
 {
+	public class IntClass
+	{
+		public int Value;
+		public IntClass(int val)
+		{
+			Value = val;
+		}
+	}
+
+	public class BoolClass
+	{
+		public bool Value;
+		public BoolClass(bool val)
+		{
+			Value = val;
+		}
+	}
+
    public class Driver : IDriver, IRequestContext
    {      
       public const string VERSION = "gamma";
@@ -78,6 +96,17 @@ namespace Mogade
             callback(r);
          });
       }
+		
+		public void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<IntClass>> callback)
+		{
+			var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "scope", (int)scope } };
+			var communicator = new Communicator(this);
+			communicator.SendPayload<IntClass>(Communicator.Get, "scores/count", payload, r =>
+			                              {
+				if (r.Success) { r.Data = new IntClass(JsonConvert.DeserializeObject<int>(r.Raw)); }
+				callback(r);
+			});
+		}
 
       public void GetRivals(string leaderboardId, LeaderboardScope scope, string userName, string uniqueIdentifier, Action<Response<IList<Score>>> callback)
       {
@@ -113,6 +142,21 @@ namespace Mogade
             callback(r);
          });
       }
+
+		
+		public void GetRank(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<IntClass>> callback)
+		{
+			var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "username", userName }, { "userkey", uniqueIdentifier },  {"scopes", (int)scope} };
+			var communicator = new Communicator(this);
+			communicator.SendPayload<IntClass>(Communicator.Get, "ranks", payload, r =>
+			                              {
+				if (r.Success)
+				{
+					r.Data = new IntClass(JsonConvert.DeserializeObject<int>(r.Raw));
+				}
+				callback(r);
+			});
+		}
 
       public void GetRanks(string leaderboardId, string userName, string uniqueIdentifier, Action<Response<Ranks>> callback)
       {
@@ -155,6 +199,21 @@ namespace Mogade
             callback(r);
          });
       }
+		
+		
+		public void GetRank(string leaderboardId, int score, LeaderboardScope scope, Action<Response<IntClass>> callback)
+		{
+			var payload = new Dictionary<string, object> { { "lid", leaderboardId }, { "score", score }, { "scopes", (int)scope } };
+			var communicator = new Communicator(this);
+			communicator.SendPayload<IntClass>(Communicator.Get, "ranks", payload, r =>
+			                              {
+				if (r.Success)
+				{
+					r.Data = new IntClass(JsonConvert.DeserializeObject<int>(r.Raw));
+				}
+				callback(r);
+			});
+		}
 
       public void GetRanks(string leaderboardId, int score, LeaderboardScope[] scopes, Action<Response<Ranks>> callback)
       {
@@ -258,5 +317,17 @@ namespace Mogade
             if (callback != null) { callback(r); }
          });
       }
+
+		
+		public void Rename(string uniqueIdentifier, string oldUserName, string newUserName, Action<Response<BoolClass>> callback)
+		{
+			var payload = new Dictionary<string, object> { { "username", oldUserName }, { "userkey", uniqueIdentifier }, {"newname", newUserName} };
+			var communicator = new Communicator(this);
+			communicator.SendPayload<BoolClass>(Communicator.Post, "users/rename", payload, r =>
+			{
+				if (r.Success) { r.Data = new BoolClass(JsonConvert.DeserializeObject<bool>(r.Raw)); }
+				if (callback != null) { callback(r); }
+			});
+		}
    }
 }

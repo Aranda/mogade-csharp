@@ -78,7 +78,7 @@ namespace Mogade
       /// <param name="leaderboardId">The id of the leaderboard to get the scores from</param>
       /// <param name="scope">The scope to get the scores from (daily, weekly or overall)</param>
       /// <returns>The number of scores</returns>
-      void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<int>> callback);
+      void GetLeaderboardCount(string leaderboardId, LeaderboardScope scope, Action<Response<IntClass>> callback);
 
       /// <summary>
       /// Gets the scores of the players  which are immediatly ahead of the specified player in the leaderboard
@@ -107,7 +107,7 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
       /// <param name="scope">The scope to get the rank for</param>
       /// <returns>Returns the user's rank (0 means the user doesn't have a rank for the specified scope)</returns>
-      void GetRank(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<int>> callback);
+      void GetRank(string leaderboardId, string userName, string uniqueIdentifier, LeaderboardScope scope, Action<Response<IntClass>> callback);
 
       /// <summary>
       /// Gets a user's rank across specified scopes
@@ -134,7 +134,7 @@ namespace Mogade
       /// <param name="score">The score to get the rank of</param>
       /// <param name="scope">The scope to get the rank for</param>
       /// <returns>Returns the user's rank (0 means the user doesn't have a rank for the specified scope)</returns>
-      void GetRank(string leaderboardId, int score, LeaderboardScope scope, Action<Response<int>> callback);
+      void GetRank(string leaderboardId, int score, LeaderboardScope scope, Action<Response<IntClass>> callback);
 
       /// <summary>
       /// Gets the rank for a score acrossspecified scopes
@@ -202,6 +202,6 @@ namespace Mogade
       /// <param name="uniqueIdentifier">A unique identifier for the user. Mobile devices should use the deviceId</param>
       /// <param name="oldUserName">The current username</param>
       /// <param name="newUserName">The new username</param>
-      void Rename(string uniqueIdentifier, string oldUserName, string newUserName, Action<Response<bool>> callback);
+      void Rename(string uniqueIdentifier, string oldUserName, string newUserName, Action<Response<BoolClass>> callback);
    }
 }
